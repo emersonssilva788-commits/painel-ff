@@ -1,13 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-    <title>Painel de Autenticação</title>
+    <meta charset="UTF-8">
+    <title>Painel de Controle | FreeFire</title>
+    <style>
+        body { background-color: #121212; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-box { background: #1e1e1e; padding: 20px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,255,0,0.3); width: 300px; text-align: center; }
+        input { width: 90%; padding: 10px; margin: 10px 0; border: none; border-radius: 5px; background: #333; color: #fff; }
+        button { width: 100%; padding: 10px; background: #00ff00; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #00cc00; }
+        h2 { color: #00ff00; }
+    </style>
 </head>
 <body>
-    <h1>Bem-vindo ao Painel</h1>
-    <input type="text" id="key" placeholder="Digite sua Chave">
-    <input type="text" id="hwid" placeholder="Digite seu HWID">
-    <button onclick="logar()">Entrar</button>
+    <div class="login-box">
+        <h2>LOGIN FF</h2>
+        <input type="text" id="key" placeholder="Insira sua Chave">
+        <input type="text" id="hwid" placeholder="ID do Dispositivo">
+        <button onclick="logar()">ENTRAR</button>
+    </div>
     <script>
         async function logar() {
             const key = document.getElementById('key').value;
