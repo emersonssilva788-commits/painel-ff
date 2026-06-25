@@ -1,24 +1,35 @@
 const express = require('express');
 const app = express();
-const path = require('path');
-
 app.use(express.json());
-// Isso serve os arquivos da pasta public automaticamente
 app.use(express.static('public'));
 
+// Simulando banco de dados com chaves
 const db = {
-    "KEY123": { status: "active", hwid: "DEVICE_01" },
-    "KEY456": { status: "active", hwid: "DEVICE_02" }
+    "CHAVE_VIP_01": { status: "active", hwid: null },
+    "CHAVE_VIP_02": { status: "active", hwid: null }
 };
 
-app.post('/login', (req, res) => {
+// Rota de Login/Autenticação para o Menu do Jogo
+app.post('/api/auth', (req, res) => {
     const { key, hwid } = req.body;
-    if (db[key] && db[key].status === "active" && db[key].hwid === hwid) {
+    
+    if (!db[key]) return res.json({ success: false, message: "Chave inexistente" });
+    
+    if (db[key].status !== "active") return res.json({ success: false, message: "Chave expirada" });
+
+    // Se a chave não tem HWID, vincula o primeiro que logar
+    if (!db[key].hwid) {
+        db[key].hwid = hwid;
+        return res.json({ success: true, message: "Chave vinculada com sucesso!" });
+    }
+
+    // Verifica se o HWID é o mesmo
+    if (db[key].hwid === hwid) {
         res.json({ success: true, message: "Acesso Liberado" });
     } else {
-        res.json({ success: false, message: "Chave inválida ou dispositivo não autorizado" });
+        res.json({ success: false, message: "Chave já vinculada a outro aparelho" });
     }
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log('Servidor rodando na porta ' + PORT));
+app.listen(PORT, () => console.log('Servidor de Autenticação Ativo na porta ' + PORT));
