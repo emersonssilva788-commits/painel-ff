@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Painel de Autenticação</title>
+</head>
+<body>
+    <h1>Bem-vindo ao Painel</h1>
+    <input type="text" id="key" placeholder="Digite sua Chave">
+    <input type="text" id="hwid" placeholder="Digite seu HWID">
+    <button onclick="logar()">Entrar</button>
+    <script>
+        async function logar() {
+            const key = document.getElementById('key').value;
+            const hwid = document.getElementById('hwid').value;
+            const res = await fetch('/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({key, hwid})
+            });
+            const data = await res.json();
+            alert(data.message);
+        }
+    </script>
+</body>
+</html>

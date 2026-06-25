@@ -1,8 +1,11 @@
 const express = require('express');
 const app = express();
-app.use(express.json());
+const path = require('path');
 
-// Banco de dados temporário (Chaves de acesso)
+app.use(express.json());
+// Isso serve os arquivos da pasta public automaticamente
+app.use(express.static('public'));
+
 const db = {
     "KEY123": { status: "active", hwid: "DEVICE_01" },
     "KEY456": { status: "active", hwid: "DEVICE_02" }
@@ -10,7 +13,6 @@ const db = {
 
 app.post('/login', (req, res) => {
     const { key, hwid } = req.body;
-    
     if (db[key] && db[key].status === "active" && db[key].hwid === hwid) {
         res.json({ success: true, message: "Acesso Liberado" });
     } else {
@@ -18,4 +20,5 @@ app.post('/login', (req, res) => {
     }
 });
 
-app.listen(3000, () => console.log('Servidor de Autenticação Online na porta 3000'));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log('Servidor rodando na porta ' + PORT));
